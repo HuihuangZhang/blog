@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-0
+  namespace: logging
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: "/enas-cnbjbbfc773e325a/k8s/elasticdata/node0"
+    server: cnbjbbfc773e325a.vpc-rrsr96b0afpcv0x57oe383h.nas.ivolces.com    # fill in the nfs location
+  mountOptions:
+    - vers=3
+    - nolock
+    - proto=tcp
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-1
+  namespace: logging
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: "/enas-cnbjbbfc773e325a/k8s/elasticdata/node1"
+    server: cnbjbbfc773e325a.vpc-rrsr96b0afpcv0x57oe383h.nas.ivolces.com    # fill in the nfs location
+  mountOptions:
+    - vers=3
+    - nolock
+    - proto=tcp
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elasticsearch-data-2
+  namespace: logging
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: "/enas-cnbjbbfc773e325a/k8s/elasticdata/node2"
+    server: cnbjbbfc773e325a.vpc-rrsr96b0afpcv0x57oe383h.nas.ivolces.com    # fill in the nfs location
+  mountOptions:
+    - vers=3
+    - nolock
+    - proto=tcp
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+    - noresvport
+
+---
+
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elastic-cluster
+  namespace: logging
+spec:
+  version: 8.13.4
+  volumeClaimDeletePolicy: DeleteOnScaledownOnly
+  nodeSets:
+  - name: masters
+    count: 3
+    config:
+      node.store.allow_mmap: false
+      node.roles: ["master", "data", "ingest"]
+    podTemplate:
+      spec:
+        securityContext:
+          fsGroup: 1000
+          runAsUser: 1000
+          runAsGroup: 1000
+        priorityClassName: elastic-cluster-high-priority
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsGroup: 0
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+        containers:
+        - name: elasticsearch
+          resources:
+            limits:
+              cpu: 4
+              memory: 8Gi
+            requests:
+              cpu: 4
+              memory: 8Gi
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms2g -Xmx2g"
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteMany
+        resources:
+          requests:
+            storage: 100Gi
