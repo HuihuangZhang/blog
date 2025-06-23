@@ -1,0 +1,366 @@
+root@test-letsencrypt-848b8bb8df-7v9lc:/# aws --endpoint-url=http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn     s3 cp s3://aidev/common/mos-deploy/mos-hudiff/ ./HuDiff/checkpoints/ --recursive --debug
+2025-06-20 09:41:13,006 - MainThread - awscli.clidriver - DEBUG - CLI version: aws-cli/2.27.39 Python/3.13.4 Linux/5.15.0-107-generic exe/x86_64.ubuntu.22
+2025-06-20 09:41:13,006 - MainThread - awscli.clidriver - DEBUG - Arguments entered to CLI: ['--endpoint-url=http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn', 's3', 'cp', 's3://aidev/common/mos-deploy/mos-hudiff/', './HuDiff/checkpoints/', '--recursive', '--debug']
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function add_s3 at 0x7fa664599940>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function add_ddb at 0x7fa66475b100>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <bound method BasicCommand.add_command of <class 'awscli.customizations.configure.configure.ConfigureCommand'>>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function change_name at 0x7fa664a89d00>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function change_name at 0x7fa664a8aca0>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function alias_opsworks_cm at 0x7fa6646dd260>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function add_history_commands at 0x7fa66469a160>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <bound method BasicCommand.add_command of <class 'awscli.customizations.devcommands.CLIDevCommand'>>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <function add_waiters at 0x7fa6645b2160>
+2025-06-20 09:41:13,015 - MainThread - botocore.hooks - DEBUG - Event building-command-table.main: calling handler <bound method AliasSubCommandInjector.on_building_command_table of <awscli.alias.AliasSubCommandInjector object at 0x7fa6645edd30>>
+2025-06-20 09:41:13,015 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/data/cli.json
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <function resolve_types at 0x7fa66468d760>
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <function no_sign_request at 0x7fa66468da80>
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <function resolve_verify_ssl at 0x7fa66468d9e0>
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <function resolve_cli_read_timeout at 0x7fa66468dbc0>
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <function resolve_cli_connect_timeout at 0x7fa66468db20>
+2025-06-20 09:41:13,016 - MainThread - botocore.hooks - DEBUG - Event top-level-args-parsed: calling handler <built-in method update of dict object at 0x7fa66443ec80>
+2025-06-20 09:41:13,017 - MainThread - awscli.clidriver - DEBUG - CLI version: aws-cli/2.27.39 Python/3.13.4 Linux/5.15.0-107-generic exe/x86_64.ubuntu.22
+2025-06-20 09:41:13,017 - MainThread - awscli.clidriver - DEBUG - Arguments entered to CLI: ['--endpoint-url=http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn', 's3', 'cp', 's3://aidev/common/mos-deploy/mos-hudiff/', './HuDiff/checkpoints/', '--recursive', '--debug']
+2025-06-20 09:41:13,017 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function add_timestamp_parser at 0x7fa6645b0d60>
+2025-06-20 09:41:13,017 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function register_uri_param_handler at 0x7fa665319080>
+2025-06-20 09:41:13,017 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function add_binary_formatter at 0x7fa664aeb7e0>
+2025-06-20 09:41:13,017 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function no_pager_handler at 0x7fa664c95760>
+2025-06-20 09:41:13,017 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function inject_assume_role_provider_cache at 0x7fa664aead40>
+2025-06-20 09:41:13,018 - MainThread - botocore.utils - DEBUG - IMDS ENDPOINT: http://169.254.169.254/
+2025-06-20 09:41:13,019 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function attach_history_handler at 0x7fa664698900>
+2025-06-20 09:41:13,019 - MainThread - botocore.hooks - DEBUG - Event session-initialized: calling handler <function inject_json_file_cache at 0x7fa66474d8a0>
+2025-06-20 09:41:13,020 - MainThread - botocore.hooks - DEBUG - Event building-command-table.s3: calling handler <function add_waiters at 0x7fa6645b2160>
+2025-06-20 09:41:13,020 - MainThread - botocore.hooks - DEBUG - Event building-command-table.s3: calling handler <bound method AliasSubCommandInjector.on_building_command_table of <awscli.alias.AliasSubCommandInjector object at 0x7fa6645edd30>>
+2025-06-20 09:41:13,020 - MainThread - botocore.hooks - DEBUG - Event building-command-table.s3_cp: calling handler <function add_waiters at 0x7fa6645b2160>
+2025-06-20 09:41:13,020 - MainThread - botocore.hooks - DEBUG - Event building-command-table.s3_cp: calling handler <bound method AliasSubCommandInjector.on_building_command_table of <awscli.alias.AliasSubCommandInjector object at 0x7fa6645edd30>>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.paths: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.dryrun: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.quiet: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,021 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.anonymous: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.acl: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.follow-symlinks: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.anonymous: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse-c: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse-c-key: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse-kms-key-id: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse-c-copy-source: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.sse-c-copy-source-key: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.storage-class: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.grants: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.website-redirect: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.content-type: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.cache-control: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.content-disposition: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.content-encoding: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.content-language: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.expires: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.source-region: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.only-show-errors: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.anonymous: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.page-size: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.ignore-glacier-warnings: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.force-glacier-transfer: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.request-payer: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.checksum-mode: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.checksum-algorithm: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.metadata: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.copy-props: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event process-cli-arg.custom.cp: calling handler <awscli.argprocess.ParamShorthandParser object at 0x7fa6645ec050>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.metadata-directive: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.expected-size: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,022 - MainThread - botocore.hooks - DEBUG - Event load-cli-arg.custom.cp.anonymous: calling handler <awscli.paramfile.URIArgumentHandler object at 0x7fa6645ee7b0>
+2025-06-20 09:41:13,023 - MainThread - botocore.utils - DEBUG - IMDS ENDPOINT: http://169.254.169.254/
+2025-06-20 09:41:13,023 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): 169.254.169.254:80
+2025-06-20 09:41:14,025 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa6644857f0>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 411, in _fetch_metadata_token
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+2025-06-20 09:41:14,027 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (2): 169.254.169.254:80
+2025-06-20 09:41:15,028 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/placement/availability-zone/: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa664456fd0>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 466, in _get_request
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+2025-06-20 09:41:15,030 - MainThread - awscli.utils - DEBUG - Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2025-06-20 09:41:15,030 - MainThread - botocore.credentials - DEBUG - Looking for credentials via: env
+2025-06-20 09:41:15,030 - MainThread - botocore.credentials - INFO - Found credentials in environment variables.
+2025-06-20 09:41:15,032 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/endpoints.json
+2025-06-20 09:41:15,051 - MainThread - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x7fa66556a3e0>
+2025-06-20 09:41:15,061 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/s3/2006-03-01/service-2.json
+2025-06-20 09:41:15,069 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-06-20 09:41:15,077 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json
+2025-06-20 09:41:15,080 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/partitions.json
+2025-06-20 09:41:15,081 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x7fa6656ad120>
+2025-06-20 09:41:15,081 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x7fa6656acea0>
+2025-06-20 09:41:15,083 - MainThread - botocore.endpoint - DEBUG - Setting s3 timeout as (60, 60)
+2025-06-20 09:41:15,085 - MainThread - botocore.utils - DEBUG - Registering S3 region redirector handler
+2025-06-20 09:41:15,085 - MainThread - botocore.utils - DEBUG - Registering S3Express Identity Resolver
+2025-06-20 09:41:15,086 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (3): 169.254.169.254:80
+2025-06-20 09:41:16,087 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa663380a50>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 411, in _fetch_metadata_token
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+2025-06-20 09:41:16,089 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (4): 169.254.169.254:80
+2025-06-20 09:41:17,091 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/placement/availability-zone/: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa6630ad940>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 466, in _get_request
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+2025-06-20 09:41:17,092 - MainThread - awscli.utils - DEBUG - Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2025-06-20 09:41:17,092 - MainThread - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x7fa66556a3e0>
+2025-06-20 09:41:17,093 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x7fa6656ad120>
+2025-06-20 09:41:17,093 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x7fa6656acea0>
+2025-06-20 09:41:17,095 - MainThread - botocore.endpoint - DEBUG - Setting s3 timeout as (60, 60)
+2025-06-20 09:41:17,097 - MainThread - botocore.utils - DEBUG - Registering S3 region redirector handler
+2025-06-20 09:41:17,097 - MainThread - botocore.utils - DEBUG - Registering S3Express Identity Resolver
+2025-06-20 09:41:17,098 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (5): 169.254.169.254:80
+2025-06-20 09:41:18,099 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/api/token: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa6630ae060>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 411, in _fetch_metadata_token
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+2025-06-20 09:41:18,100 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (6): 169.254.169.254:80
+2025-06-20 09:41:19,101 - MainThread - botocore.utils - DEBUG - Caught retryable HTTP exception while making metadata service request to http://169.254.169.254/latest/meta-data/placement/availability-zone/: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+Traceback (most recent call last):
+  File "urllib3/connection.py", line 174, in _new_conn
+  File "urllib3/util/connection.py", line 95, in create_connection
+  File "urllib3/util/connection.py", line 85, in create_connection
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/httpsession.py", line 458, in send
+  File "urllib3/connectionpool.py", line 802, in urlopen
+  File "urllib3/util/retry.py", line 527, in increment
+  File "urllib3/packages/six.py", line 770, in reraise
+  File "urllib3/connectionpool.py", line 716, in urlopen
+  File "urllib3/connectionpool.py", line 416, in _make_request
+  File "urllib3/connection.py", line 244, in request
+  File "http/client.py", line 1338, in request
+  File "awscli/botocore/awsrequest.py", line 94, in _send_request
+  File "http/client.py", line 1384, in _send_request
+  File "http/client.py", line 1333, in endheaders
+  File "awscli/botocore/awsrequest.py", line 123, in _send_output
+  File "awscli/botocore/awsrequest.py", line 218, in send
+  File "http/client.py", line 1037, in send
+  File "urllib3/connection.py", line 205, in connect
+  File "urllib3/connection.py", line 179, in _new_conn
+urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPConnection object at 0x7fa6633a3890>, 'Connection to 169.254.169.254 timed out. (connect timeout=1)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "awscli/botocore/utils.py", line 466, in _get_request
+  File "awscli/botocore/httpsession.py", line 493, in send
+botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/meta-data/placement/availability-zone/"
+2025-06-20 09:41:19,103 - MainThread - awscli.utils - DEBUG - Max number of attempts exceeded (1) when attempting to retrieve data from metadata service.
+2025-06-20 09:41:19,103 - MainThread - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x7fa66556a3e0>
+2025-06-20 09:41:19,104 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x7fa6656ad120>
+2025-06-20 09:41:19,104 - MainThread - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x7fa6656acea0>
+2025-06-20 09:41:19,114 - MainThread - botocore.endpoint - DEBUG - Setting s3 timeout as (60, 60)
+2025-06-20 09:41:19,116 - MainThread - botocore.utils - DEBUG - Registering S3 region redirector handler
+2025-06-20 09:41:19,116 - MainThread - botocore.utils - DEBUG - Registering S3Express Identity Resolver
+2025-06-20 09:41:19,116 - MainThread - awscli.customizations.s3.factory - DEBUG - S3 CRT client optimized for system: False
+2025-06-20 09:41:19,116 - MainThread - awscli.customizations.s3.factory - DEBUG - Auto resolved s3 transfer client to: classic
+2025-06-20 09:41:19,116 - MainThread - awscli.customizations.s3.factory - DEBUG - Using a multipart threshold of 8388608 and a part size of 8388608
+2025-06-20 09:41:19,125 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/s3/2006-03-01/paginators-1.json
+2025-06-20 09:41:19,126 - MainThread - botocore.loaders - DEBUG - Loading JSON file: /usr/local/aws-cli/v2/2.27.39/dist/awscli/botocore/data/s3/2006-03-01/paginators-1.sdk-extras.json
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event provide-client-params.s3.ListObjectsV2: calling handler <function base64_decode_input_blobs at 0x7fa664aeb880>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <function set_list_objects_encoding_type_url at 0x7fa66556be20>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <function validate_bucket_name at 0x7fa66556a980>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <function remove_bucket_from_url_paths_from_model at 0x7fa665580b80>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <bound method S3RegionRedirectorv2.annotate_request_context of <botocore.utils.S3RegionRedirectorv2 object at 0x7fa663382d50>>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <bound method S3ExpressIdentityResolver.inject_signing_cache_key of <botocore.utils.S3ExpressIdentityResolver object at 0x7fa663382e90>>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <function generate_idempotent_uuid at 0x7fa66556a7a0>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-parameter-build.s3.ListObjectsV2: calling handler <function _handle_request_validation_mode_member at 0x7fa665581260>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <function customize_endpoint_resolver_builtins at 0x7fa665580d60>
+2025-06-20 09:41:19,126 - MainThread - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <bound method S3RegionRedirectorv2.redirect_from_cache of <botocore.utils.S3RegionRedirectorv2 object at 0x7fa663382d50>>
+2025-06-20 09:41:19,127 - MainThread - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Bucket': 'aidev', 'Region': 'aws-global', 'UseFIPS': False, 'UseDualStack': False, 'Endpoint': 'http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn', 'ForcePathStyle': True, 'Accelerate': False, 'UseGlobalEndpoint': False, 'Prefix': 'common/mos-deploy/mos-hudiff/', 'DisableMultiRegionAccessPoints': False, 'UseArnRegion': True}
+2025-06-20 09:41:19,127 - MainThread - botocore.regions - DEBUG - Endpoint provider result: http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn/aidev
+2025-06-20 09:41:19,127 - MainThread - botocore.regions - DEBUG - Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is: "None"
+2025-06-20 09:41:19,127 - MainThread - botocore.regions - DEBUG - Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.ListObjectsV2: calling handler <function add_expect_header at 0x7fa66556ad40>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.ListObjectsV2: calling handler <bound method S3ExpressIdentityResolver.apply_signing_cache_key of <botocore.utils.S3ExpressIdentityResolver object at 0x7fa663382e90>>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.ListObjectsV2: calling handler <function add_query_compatibility_header at 0x7fa6655811c0>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-call.s3.ListObjectsV2: calling handler <function inject_api_version_header_if_needed at 0x7fa6655802c0>
+2025-06-20 09:41:19,128 - MainThread - botocore.endpoint - DEBUG - Making request for OperationModel(name=ListObjectsV2) with params: {'url_path': '?list-type=2', 'query_string': {'prefix': 'common/mos-deploy/mos-hudiff/', 'encoding-type': 'url'}, 'method': 'GET', 'headers': {'User-Agent': 'aws-cli/2.27.39 md/awscrt#0.26.1 ua/2.1 os/linux#5.15.0-107-generic md/arch#x86_64 lang/python#3.13.4 md/pyimpl#CPython m/C,E,G,N cfg/retry-mode#standard md/installer#exe md/distrib#ubuntu.22 md/prompt#off md/command#s3.cp'}, 'body': b'', 'auth_path': '/aidev?list-type=2', 'url': 'http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn/aidev?list-type=2&prefix=common%2Fmos-deploy%2Fmos-hudiff%2F&encoding-type=url', 'context': {'client_region': 'aws-global', 'client_config': <botocore.config.Config object at 0x7fa6630ad350>, 'has_streaming_input': False, 'auth_type': 'v4', 'unsigned_payload': None, 'encoding_type_auto_set': True, 's3_redirect': {'redirected': False, 'bucket': 'aidev', 'params': {'Bucket': 'aidev', 'Prefix': 'common/mos-deploy/mos-hudiff/', 'EncodingType': 'url'}}, 'S3Express': {'bucket_name': 'aidev'}, 'signing': {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}, 'endpoint_properties': {'authSchemes': [{'disableDoubleEncoding': True, 'name': 'sigv4', 'signingName': 's3', 'signingRegion': 'us-east-1'}]}}}
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event request-created.s3.ListObjectsV2: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7fa6633807d0>>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event choose-signer.s3.ListObjectsV2: calling handler <function set_operation_specific_signer at 0x7fa66556a5c0>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.ListObjectsV2: calling handler <function remove_arn_from_signing_path at 0x7fa665580cc0>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.ListObjectsV2: calling handler <function _set_extra_headers_for_unsigned_request at 0x7fa665581300>
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event before-sign.s3.ListObjectsV2: calling handler <bound method S3ExpressIdentityResolver.resolve_s3express_identity of <botocore.utils.S3ExpressIdentityResolver object at 0x7fa663382e90>>
+2025-06-20 09:41:19,128 - MainThread - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2025-06-20 09:41:19,128 - MainThread - botocore.auth - DEBUG - CanonicalRequest:
+GET
+/aidev
+encoding-type=url&list-type=2&prefix=common%2Fmos-deploy%2Fmos-hudiff%2F
+host:aoss-internal.cn-sh-01.sensecoreapi-oss.cn
+x-amz-content-sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+x-amz-date:20250620T094119Z
+
+host;x-amz-content-sha256;x-amz-date
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+2025-06-20 09:41:19,128 - MainThread - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20250620T094119Z
+20250620/us-east-1/s3/aws4_request
+38ca7265b8b3f6b5e26dec1c2141751177ce788318973babaf6ee95ec3d083cc
+2025-06-20 09:41:19,128 - MainThread - botocore.auth - DEBUG - Signature:
+953790e832cab32cef02d3207ed91cd7e4fa4a34cb295ca21230d6834436103b
+2025-06-20 09:41:19,128 - MainThread - botocore.hooks - DEBUG - Event request-created.s3.ListObjectsV2: calling handler <bound method UserAgentString.rebuild_and_replace_user_agent_handler of <botocore.useragent.UserAgentString object at 0x7fa6630ad480>>
+2025-06-20 09:41:19,129 - MainThread - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=GET, url=http://aoss-internal.cn-sh-01.sensecoreapi-oss.cn/aidev?list-type=2&prefix=common%2Fmos-deploy%2Fmos-hudiff%2F&encoding-type=url, headers={'User-Agent': b'aws-cli/2.27.39 md/awscrt#0.26.1 ua/2.1 os/linux#5.15.0-107-generic md/arch#x86_64 lang/python#3.13.4 md/pyimpl#CPython m/C,E,G,N cfg/retry-mode#standard md/installer#exe md/distrib#ubuntu.22 md/prompt#off md/command#s3.cp', 'X-Amz-Date': b'20250620T094119Z', 'X-Amz-Content-SHA256': b'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'Authorization': b'AWS4-HMAC-SHA256 Credential=E435BE812A7346019C05A2F9CE0C49AD/20250620/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=953790e832cab32cef02d3207ed91cd7e4fa4a34cb295ca21230d6834436103b'}>
+2025-06-20 09:41:19,129 - MainThread - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): aoss-internal.cn-sh-01.sensecoreapi-oss.cn:80
