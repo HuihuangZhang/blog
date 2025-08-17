@@ -109,5 +109,36 @@ rancher 支持使用 helm chart 形式来发布、回滚服务。
 
 在 helm chart 的管理上，如果正常使用 `helm create` 命令来创建的 chart，其中的 `values.yaml` 会包含很多配置项，例如 image 的配置、ingress 的配置、hpa 的配置等。从 `values.yaml` 的字段角度看，可大致将字段分成两类，一类是运维同学需要关注的；一类是开发同学需要关注的。
 
+考虑到 rancher 支持 helm chart 发布和 gitlab CI ，提出了“两阶段 helm chart 管理”的方案。
+
+方案的考虑点是：
+1. 根据**开发角色关注点**来分离 `values.yaml` 文件中配置项。即不同角色关注的 `values.yaml` 文件不同；
+2. 根据**部署环境**来分离 `values.yaml` 文件中的配置项。即 dev 、prod 环境的 `values.yaml` 文件不同；
+
+### 整体方案[TODO]
+
+# 附录 A
+
+## A.1 问题记录
+
+### 解绑后重新绑定 ldap，rancher UI 会出现 namespace 未被删除的错误
+
+原因是 rancher 通过 namespace 来管理每个用户的配置，如果通过 docker 安装的 rancher，可以通过 `docker exec -it rancher /bin/bash` `kubectl get ns` 来查看。（这也说明了本地安装时 rancher 需要 k3s 环境的原因）
+
+在出现问题时，可以看到多个 namespace 都处于 terminating 的状态，但一直杀不死。通过 `kubectl get <ns> -o json` ，可以看到 `.spec.finalizers` 是 `kubernetes`。[^1]
+
+> If uninstall gets stuck it is likely due to finalizers. Resource status fields, e.g. on a namespace, will list the resources waiting for their finalizers to be removed. The finalizers can be removed manually with kubectl, if their controllers are no longer running. [^2]
+
+在容器内使用以下命令 [^3] 删除掉 namespace 绑定的 `finalizers` 变量，之后 namespace 就可以被正常删除了。
+
+```
+NAMESPACE=""
+kubectl get -o json namespace $NAMESPACE | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$NAMESPACE/finalize -f -
+```
+
+
+[^1]: [Namespaces created by rancher can't be deleted](https://github.com/rancher/rancher/issues/36450)
+[^2]: https://documentation.suse.com/cloudnative/continuous-delivery/v0.12/en/uninstall.html
+[^3]: [rancher-cleanup](https://github.com/rancher/rancher-cleanup/blob/main/cleanup.sh#L79)
 
 
