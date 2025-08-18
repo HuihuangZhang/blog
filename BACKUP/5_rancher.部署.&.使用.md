@@ -50,12 +50,12 @@ http {
     }
     server {
         listen 80;
-        server_name rancher.moleculemind.com;
+        server_name rancher.xxx.com;
         return 301 https://$host$request_uri;
     }
     server {
         listen 443 ssl http2;
-        server_name rancher.moleculemind.com;
+        server_name rancher.xxx.com;
 
         ssl_certificate /data/cert/moscom/mm.pem;
         ssl_certificate_key /data/cert/moscom/mm.key;
@@ -115,7 +115,51 @@ rancher 支持使用 helm chart 形式来发布、回滚服务。
 1. 根据**开发角色关注点**来分离 `values.yaml` 文件中配置项。即不同角色关注的 `values.yaml` 文件不同；
 2. 根据**部署环境**来分离 `values.yaml` 文件中的配置项。即 dev 、prod 环境的 `values.yaml` 文件不同；
 
-### 整体方案[TODO]
+### 整体方案
+
+<img width="947" height="546" alt="Image" src="https://github.com/user-attachments/assets/35e81338-0148-4f0e-91c3-2eef78fcd809" />
+
+在 stage1 中，helm chart 的目录结构大体和 `helm create` 命令生成的目录相同，但添加了额外的文件。举例如下：
+
+```
+.
+├── Chart.yaml
+├── dev-values.yaml
+├── env.yaml
+├── prod-values.yaml
+├── templates
+│   ├── _helpers.tpl
+│   ├── deployment.yaml
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── service.yaml
+│   ├── serviceaccount.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+```
+
+其中需要关注的文件有：
+
+- `values.yaml`：用来放置跟部署环境无关的配置项，例如 `image`、`imagePullSecrets`、`service` 配置；
+- `dev-values.yaml` 和 `prod-values.yaml` ：用来放置环境相关配置，例如 `resource`、 `ingress` 配置；
+- `env.yaml`：单独隔离一个文件用来放置初始化服务的环境变量；
+
+在 stage2 中，helm chart 的目录结构被简化为如下：
+
+```
+.
+├── Chart.yaml
+├── templates
+│   └── biz-service.yaml
+└── values.yaml
+```
+
+所有相关的配置都被放置在 `biz-service.yaml` 文件中，`values.yaml` 文件只暴露 `image.tag` 和 `env` 两个和开发同学部署相关的配置。
+
+stage1 到 stage2 的变更是依赖 gitlab CI 工具自动化执行的（参考 [脚本](#helm更改自动化脚本示例)）。意味着如果运维同学改动了服务的配置，则相关的改动会被自动整理后同步到 dev 和 prod 环境的发布配置文件中。
+
 
 # 附录 A
 
@@ -135,6 +179,263 @@ rancher 支持使用 helm chart 形式来发布、回滚服务。
 NAMESPACE=""
 kubectl get -o json namespace $NAMESPACE | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$NAMESPACE/finalize -f -
 ```
+
+## A.2 <a name="helm更改自动化脚本示例"></a>
+
+```bash
+#!/bin/bash
+
+set -x
+set -e
+
+DEV_NAMESPACE="mos"
+PROD_NAMESPACE="prod"
+DEV_HELM_CHART_BRANCH="try-dev"
+PROD_HELM_CHART_BRANCH="try-prod"
+
+CD_GITLAB_TOKEN="<GITLAB-TOKEN>"
+
+SERVICE_HELM_CHARTS_DIR="service-helm-charts"
+
+sed="sed"
+# if in mac os, use gsed
+if [[ "$(uname)" == "Darwin" ]]; then
+    sed="gsed"
+else
+    sed="sed"
+fi
+
+function git_clone_repo() {
+    local repo_url=$1
+
+    git config --global credential.helper store
+    echo "https://${CD_GITLAB_TOKEN}@code.xxx.com" > ~/.git-credentials
+
+    local repo_name=$(basename "$repo_url" .git)
+    git clone $repo_url $SERVICE_HELM_CHARTS_DIR
+}
+
+function git_add_commit_push() {
+    local repo_path=$1
+    local branch_name=$2
+    local commit_message=$3
+
+    pushd "$repo_path"
+    
+    # if nothing changes, skip
+    if [[ -z $(git status --porcelain) ]]; then
+        echo "No changes to commit in $repo_path"
+        popd
+        return
+    fi
+    
+    git add .
+    git commit -m "$commit_message"
+    git push origin $branch_name
+    
+    popd
+}
+
+# create_helm_folder 
+# This function creates an empty Helm chart folder structure with a Chart.yaml, .helmignore, and values.yaml file.
+# @Param $1: env - The environment for which the Helm chart is being created (e.g., dev, prod)
+# @Param $2: repo_path - The path to the repository where the Helm chart folder will be created
+function create_helm_folder() {
+    local env=$1
+    local repo_path=$2
+    local chart_name=$3
+
+    echo "Creating Helm folder for $repo_path"
+    
+    mkdir -p "$repo_path/templates"
+    
+    touch "$repo_path/Chart.yaml"
+    touch "$repo_path/.helmignore"
+    
+    cat << EOF > "$repo_path/values.yaml"
+# Default values for $repo_path.
+image:
+  tag: ""
+EOF
+    if [[ -f "./$chart_name/env.yaml" ]]; then
+        echo "Adding environment variables from $chart_name/env.yaml"
+        cat "$chart_name/env.yaml" >> "$repo_path/values.yaml"
+        # replace <ENV> with the actual environment
+        $sed -i -E "s/<ENV>/$env/g" "$repo_path"/values.yaml
+        $sed -i -E "s/<REL_ENV>/$env/g" "$repo_path"/values.yaml
+        $sed -i -E "s/<mosv2-ENV>/mosv2-$env/g" "$repo_path"/values.yaml
+    else
+        echo "No env.yaml found in $chart_name, skipping env variables."
+    fi
+    echo "Helm folder created at $repo_path"
+}
+
+function process_target_helm_chart() {
+    local env=$1
+    local source_chart_tpl_path=$2
+    local target_repo_path=$3
+    local target_chart_name=$4
+
+    local target_branch=$(get_target_branch_by_env "$env")
+    
+    # print all inputs to debug
+    echo "Processing target helm chart with inputs:"
+    echo "Target branch: $env $target_branch"
+    echo "Source chart template path: $source_chart_tpl_path"
+    echo "Target repo path: $target_repo_path"
+    echo "Target chart name: $target_chart_name"
+    
+    # 将 image.tag 替换为 {{ .Values.image.tag }}
+    $sed -i -E -e 's/([[:space:]]*image:[[:space:]]+")(mos-cn-beijing|registry\.cn-sh-01\.sensecore\.cn)([^:]*):[^"]+"/\1\2\3:{{ .Values.image.tag }}"/g' $source_chart_tpl_path
+
+    # 添加上 env 的模版
+    $sed -i -E -e '/[[:space:]]*resources/i \
+          {{- with .Values.env }} \
+          env:\
+            {{- toYaml . | nindent 12 }}\
+          {{- end }}' $source_chart_tpl_path
+
+    ## debug
+    # cat $source_chart_tpl_path
+    
+    # checkout to dev branch
+    echo "pwd: $(pwd)"
+    pushd "$target_repo_path"
+    git fetch origin $target_branch
+    git checkout $target_branch
+    popd
+
+    # if helm directory does not exist, create it
+    if [[ ! -d "$target_repo_path/$target_chart_name" ]]; then
+        echo "Creating directory $target_repo_path/$target_chart_name"
+        create_helm_folder "$env" "$target_repo_path/$target_chart_name" "$target_chart_name"
+    fi
+    
+    # add the dev/prod values to the helm-charts repo
+    cp $source_chart_tpl_path "$target_repo_path/$target_chart_name/templates/$target_chart_name.yaml"
+    
+    # add chart-related files
+    cp "$target_chart_name/Chart.yaml" "$target_repo_path/$target_chart_name/Chart.yaml"
+    cp "$target_chart_name/.helmignore" "$target_repo_path/$target_chart_name/.helmignore"
+}
+
+function get_target_branch_by_env() {
+    local env=$1
+    if [[ "$env" == "dev" ]]; then
+        echo "$DEV_HELM_CHART_BRANCH"
+    elif [[ "$env" == "prod" ]]; then
+        echo "$PROD_HELM_CHART_BRANCH"
+    else
+        echo "Unknown environment: $env"
+        exit 1
+    fi
+}
+
+# process_helm_values 
+## 1. processes the helm values for a given chart. 
+## 2. generates the helm template files for dev and prod environments.
+## 3. call `process_target_helm_chart` to replace the image tag and adding environment variables.
+## 4. commits and pushes the changes to the target repository.
+# !NOTE: this function must be run in the directory where the chart is located.
+# @Param $1: target_repo_path - The path to the target repository where the helm charts will be processed
+# @Param $2: chart_name - The name of the chart to process
+function process_helm_values() {
+    local target_repo_path=$1
+    local chart_name=$2
+    echo "Processing directory: $chart_name"
+
+    local dev_values_path="$chart_name/dev-values.yaml"
+    local prod_values_path="$chart_name/prod-values.yaml"
+    local result_path="$chart_name/result"
+    
+    local dev_template_file="$chart_name/result/$chart_name-dev.yaml"
+    local prod_template_file="$chart_name/result/$chart_name-prod.yaml"
+    
+    mkdir -p $result_path
+    
+    echo "EXPORT_TO: $EXPORT_TO"
+
+    if [[ -f "$dev_values_path" && "$EXPORT_TO" == "dev" ]]; then
+        pwd
+        echo "Processing $dev_values_path"
+        helm template $chart_name ./$chart_name -n $DEV_NAMESPACE -f $dev_values_path > $dev_template_file
+
+        process_target_helm_chart "dev" "$dev_template_file" "$target_repo_path" "$chart_name"
+
+        git_add_commit_push "$target_repo_path" "$DEV_HELM_CHART_BRANCH" "Update $chart_name dev values"
+    else
+        echo "File $dev_values_path does not exist."
+    fi
+
+    if [[ -f "$prod_values_path" && "$EXPORT_TO" == "prod" ]]; then
+        echo "Processing $prod_values_path"
+        helm template $chart_name ./$chart_name -n $PROD_NAMESPACE -f $prod_values_path > $prod_template_file
+
+        process_target_helm_chart "prod" "$prod_template_file" "$target_repo_path" "$chart_name"
+
+        git_add_commit_push "$target_repo_path" "$PROD_HELM_CHART_BRANCH" "Update $chart_name prod values"
+    else
+        echo "File $prod_values_path does not exist."
+    fi
+}
+
+function main() {
+    # local changed_charts=$(git status --porcelain | awk '{print $2}' | grep --color=never '^templates/' | while read -r file; do
+
+    # if CI_MERGE_REQUEST_DIFF_BASE_SHA
+    
+    local git_changed_files
+    if [ -n "$CI_MERGE_REQUEST_IID" ]; then
+        echo "Running in a merge request context."
+        git_changed_files=$(git diff --name-only "${CI_MERGE_REQUEST_DIFF_BASE_SHA}" "${CI_COMMIT_SHA}")
+    else
+        git fetch origin main
+        git_changed_files=$(git diff --name-only "origin/main...${CI_COMMIT_SHA}")
+    fi
+    local changed_charts=$(echo "$git_changed_files" | grep --color=never '^templates/' | while read -r file; do
+        relative_path_after_templates=$(echo "$file" | $sed 's|^templates/||')
+        if [[ "$relative_path_after_templates" == *"/"* ]]; then
+            first_component=$(echo "$relative_path_after_templates" | cut -d'/' -f1)
+            directory_in_templates="templates/$first_component"
+            if [ -d "$directory_in_templates" ]; then
+                echo "$first_component"
+            fi
+        fi
+    done | sort -u | uniq)
+
+    echo "Changed charts:$changed_charts"
+
+    if [[ -z "$changed_charts" ]]; then
+        echo "No changed charts found."
+        exit 0
+    fi
+
+    if [[ -d "$SERVICE_HELM_CHARTS_DIR" ]]; then
+        echo "Removing existing $SERVICE_HELM_CHARTS_DIR directory."
+        rm -rf "$SERVICE_HELM_CHARTS_DIR"
+    fi
+
+    pushd templates
+    
+    # TODO: should change
+    git config --global user.email "<COMMIT-USER-EMAIL>"
+    git config --global user.name "<COMMIT-USER-NAME>"
+
+    # Clone the repository
+    REPO_URL="https://code.xxx.com/moleculesos/service-helm-repo"
+    git_clone_repo "$REPO_URL"
+    echo "Cloned repository to: $SERVICE_HELM_CHARTS_DIR"
+
+    for changed_chart in $changed_charts; do
+      echo "Changed chart:$changed_chart"
+      process_helm_values "$SERVICE_HELM_CHARTS_DIR" "$changed_chart"
+    done
+    popd
+}
+
+main $@
+```
+
 
 
 [^1]: [Namespaces created by rancher can't be deleted](https://github.com/rancher/rancher/issues/36450)
