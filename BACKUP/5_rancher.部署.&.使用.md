@@ -182,6 +182,8 @@ kubectl get -o json namespace $NAMESPACE | tr -d "\n" | sed "s/\"finalizers\": \
 
 ## A.2 <a name="helm更改自动化脚本示例"></a>
 
+`process.sh` 脚本文件内容如下：
+
 ```bash
 #!/bin/bash
 
@@ -434,6 +436,57 @@ function main() {
 }
 
 main $@
+```
+
+`.gitlab-ci.yml` 配置如下：
+
+```yml
+variables:
+  DEV_NAMESPACE: "mos"
+  PROD_NAMESPACE: "prod"
+  TARGET_PRODUCTION_BRANCH: "main"
+  GIT_PATH: 0
+
+stages:
+  - process_dev
+  - process_prod
+  # - compile
+
+process_dev:
+  image: infra/service-helm-ci:0.0.1
+  stage: process_dev
+  before_script:
+    - git fetch origin $CI_MERGE_REQUEST_DIFF_BASE_SHA
+  script:
+    - echo "Files changed in this Merge Request (compared to base branch at ${CI_MERGE_REQUEST_DIFF_BASE_SHA}):"
+    - git diff --name-only "${CI_MERGE_REQUEST_DIFF_BASE_SHA}" "${CI_COMMIT_SHA}"
+    - echo "Getting changed directories in the commit range"
+    - chmod +x process.sh
+    - EXPORT_TO=dev ./process.sh
+  rules:
+    - changes:
+        - templates/**
+      when: always
+    - if: '$CI_MERGE_REQUEST_IID'
+
+process_prod:
+  image: infra/service-helm-ci:0.0.1
+  stage: process_prod
+  before_script:
+    - git fetch origin $CI_MERGE_REQUEST_DIFF_BASE_SHA
+  script:
+    - echo "Files changed in this Merge Request (compared to base branch at ${CI_MERGE_REQUEST_DIFF_BASE_SHA}):"
+    - git diff --name-only "${CI_MERGE_REQUEST_DIFF_BASE_SHA}" "${CI_COMMIT_SHA}"
+    - echo "Getting changed directories in the commit range"
+    - chmod +x process.sh
+    - EXPORT_TO=prod ./process.sh
+  rules:
+    - changes:
+        - templates/**
+      when: always
+    - if: '$CI_MERGE_REQUEST_IID'
+      when: on_success
+      allow_failure: false
 ```
 
 
