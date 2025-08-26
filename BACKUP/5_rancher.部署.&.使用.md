@@ -161,6 +161,77 @@ rancher 支持使用 helm chart 形式来发布、回滚服务。
 stage1 到 stage2 的变更是依赖 gitlab CI 工具自动化执行的（参考 [脚本](#helm更改自动化脚本示例)）。意味着如果运维同学改动了服务的配置，则相关的改动会被自动整理后同步到 dev 和 prod 环境的发布配置文件中。
 
 
+## 3.5. Monitoring
+
+打开 `Cluster - Tools` 可以看到 Monitoring 的工具，我安装的是 v103.2.2+up57.0.3 的版本。勾选 `Customize Helm options before install`，其中 pv 使用的是 `nfs-provisioner` 进行分配，其余没有额外的配置。
+
+对应的 namespace 是 `cattle-monitoring-system`，等待所有相关的资源启动。所有资源正常启动后，在 rancher 的侧边栏可以看到 `Monitoring` ，其中集成了 prometheus、grafana。
+
+### 集成 gpu-operator 的监控面板
+
+> k8s 集群中已经安装了 `gpu-operator`，以下的描述都是基于此
+
+gpu-operator 已经集成了 nvidia-dcgm-exporter，理论上每个 GPU 机器上都有一个 exporter，可以用于 prometheus 收集数据。
+
+在 prometheus targets 中没有找到 dcgm 相关的信息。执行 `kubectl get servicemonitors -A` 命令，没有看到 dcgm-exporter 的 ServiceMonitor。
+
+新建 `dcgm-exporter-servicemonitor.yaml` 配置文件：
+
+```
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nvidia-dcgm-exporter
+  namespace: gpu-operator
+spec:
+  selector:
+    matchLabels:
+      app: nvidia-dcgm-exporter
+  endpoints:
+    - port: gpu-metrics
+      interval: 30s
+```
+
+> [!IMPORTANT]
+>  ServiceMonitor 配置中：
+> 1. `metadata.namespace` 必须和需要收集指标的 Service 同一个 namespace；
+> 2. `spec.selector.matchLabels` 需要和对应 Service 的 labels 保持一致，确保能抓取到对应 Service 的数据；
+> 3. `endpoints[0].port` 需要和对应的对应 Service 的保持一致；
+
+执行 `kubectl get pod -n gpu-operator | grep dcgm` 查看，看到 exporter 对应的 service：
+
+```
+# kubectl get svc -n gpu-operator
+NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+gpu-operator           ClusterIP   10.101.116.210   <none>        8080/TCP   104d
+nvidia-dcgm-exporter   ClusterIP   10.100.99.208    <none>        9400/TCP   104d
+
+# kubectl describe svc nvidia-dcgm-exporter -n gpu-operator 
+Name:                     nvidia-dcgm-exporter
+Namespace:                gpu-operator
+Labels:                   app=nvidia-dcgm-exporter
+Annotations:              prometheus.io/scrape: true
+Selector:                 app=nvidia-dcgm-exporter
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.100.99.208
+IPs:                      10.100.99.208
+Port:                     gpu-metrics  9400/TCP
+TargetPort:               9400/TCP
+Endpoints:                10.245.2.8:9400,10.245.5.35:9400,10.245.4.252:9400
+Session Affinity:         None
+Internal Traffic Policy:  Cluster
+Events:                   <none>
+```
+
+执行 `kubectl apply -f dcgm-exporter-servicemonitor.yaml`，等待几分钟， prometheus 收集数据。正常的情况下，可以在 `Monitoring - Prometheus Targets` 中找到，并显示 UP 状态。
+
+
+<img width="1905" height="633" alt="Image" src="https://github.com/user-attachments/assets/50af7704-fac5-4686-8fce-327bc9557406" />
+
+进入 `Monitoring - Grafana` ，在 grafana UI 中添加 dashboard。需要进行登录操作，原始账号信息是 `admin/prom-operator`。导入 dashboard，输入 `12219`，可以看到对应的面板信息。
+
 # 附录 A
 
 ## A.1 问题记录
