@@ -4,7 +4,7 @@
 
 # 1. 基础知识
 
-GPU 共享技术主要为了提供 GPU 的利用效率，计算效率和 vRAM 的利用效率。[^6]
+GPU 共享技术主要为了提高 GPU 的效率，包括计算使用率和吞吐量。[^6]具体表现上可以参考 [stackoverflow 的回答](https://stackoverflow.com/a/78673375)。
 
 我了解到的 GPU 共享技术有以下 3 种：
 1. Time Slicing
@@ -36,8 +36,6 @@ VRAM Management | No VRAM limits or partitioning. | No VRAM limits or partitioni
 
 MIG (Multi Instance GPU) 将一张 GPU 卡按照 GPC(Graphics Processing Cluster) 和 vRAM 来进行切割，计算单元和显存都完全隔离。是目前最安全的 GPU 共享技术。但支持 MIG 的 GPU 型号有限，切割的规格有限，具体可以参考 [MIG User Guide - Supported MIG Profiles](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-mig-profiles)。
 
-
-- [ ] 阅读：
 
 # 2. 实践
 
@@ -258,4 +256,5 @@ data:
 [^4]: [NVIDIA device plugin for Kubernetes - With CUDA Time-Slicing](https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#with-cuda-time-slicing)
 [^5]: https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#a100-mig-profiles
 [^6]: [Improving GPU Utilization in Kubernetes](https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes)
+[^7]: https://stackoverflow.com/a/78673375
 
