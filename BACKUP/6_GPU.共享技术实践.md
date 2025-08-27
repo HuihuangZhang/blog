@@ -172,7 +172,7 @@ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op"
 ```
 
 > [!NOTE]
-> `mig.strategy=single` vs. `mig.strategy=mixed`
+> `mig.strategy=single` vs. `mig.strategy=mixed`([source](https://docs.nvidia.com/datacenter/cloud-native/kubernetes/latest/index.html#testing-with-different-strategies))
 > - `single` 会均等地切割 gpu
 > - `mixed` 允许按照英伟达规定的规格来切割 gpu[^5]
 
