@@ -4,7 +4,7 @@
 
 # 1. 基础知识
 
-GPU 共享技术主要为了提高 GPU 的效率，包括计算使用率和吞吐量。[^6]具体表现上可以参考 [stackoverflow 的回答](https://stackoverflow.com/a/78673375)。
+GPU 共享技术主要为了提高 GPU 的效率，包括计算使用率和吞吐量。[^6]具体性能上的提升可以参考 [stackoverflow 的回答](https://stackoverflow.com/a/78673375)。
 
 我了解到的 GPU 共享技术有以下 3 种：
 1. Time Slicing
@@ -161,7 +161,7 @@ data:
 
 > 在 A100 80G PCIe 机器上尝试，要做 MIG，需要确认 GPU 型号是否支持 MIG 操作。[^5] 可以通过 `nvidia.com/mig.capable` 的值判断。
 
-可以在 `cluster-policy` 层面配置 `mig.strategy`，或者在单独的 configMap 中配置 `flags.migStrategy` 字段。 `cluster-policy` 是全局的，集群粒度的配置，configMap 中是更细粒度的。
+需要在 `cluster-policy` 层面配置 `/spec/mig/strategy` 字段[^8]。
 
 ```bash
 # Example: Patching to a 'single' strategy
@@ -257,4 +257,5 @@ data:
 [^5]: https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#a100-mig-profiles
 [^6]: [Improving GPU Utilization in Kubernetes](https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes)
 [^7]: https://stackoverflow.com/a/78673375
+[^8]: https://docs.nvidia.com/datacenter/cloud-native/kubernetes/latest/index.html#testing-with-different-strategies
 
