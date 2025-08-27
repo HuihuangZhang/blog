@@ -173,8 +173,9 @@ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op"
 
 > [!NOTE]
 > `mig.strategy=single` vs. `mig.strategy=mixed`([source](https://docs.nvidia.com/datacenter/cloud-native/kubernetes/latest/index.html#testing-with-different-strategies))
-> - `single` 会均等地切割 gpu
-> - `mixed` 允许按照英伟达规定的规格来切割 gpu[^5]
+> - `single` 会打开 node 上所有 GPU 的 MIG 模式，并且会按照同一个规格均等地切割所有 gpu
+> - `mixed` 如果不是 node 上的所有 GPU 都需要打开 MIG 模式，应该选择 `mixed` 策略。允许按照英伟达规定的规格来切割 gpu[^5]
+> 另外，直观上感受，`single` 策略切分后的 GPU，名字不会有变化（还是 `nvidia.com/gpu`）；`mixed` 策略切分后的 GPU，名字会变成 `nvidia.com/mig-xg.xxgb` 的形式。
 
 
 新建配置， `mig-config-fine.yaml`:
