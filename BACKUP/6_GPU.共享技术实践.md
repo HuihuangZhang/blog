@@ -39,7 +39,7 @@ MIG (Multi Instance GPU) 将一张 GPU 卡按照 GPC(Graphics Processing Cluster
 
 # 2. 实践
 
-## 2.1. K8s
+## 2.1. [k8s-device-plugin](https://github.com/NVIDIA/k8s-device-plugin) 操作
 
 安装 `nvidia/gpu-operator`：
 
@@ -248,6 +248,15 @@ data:
 
 执行 `kubectl cordon <NODE-NAME>` 将节点设置为不可调度，等确保所有节点被迁移出该节点后（确保 GPU 不会被其他程序占用，可能会出问题），执行 `kubectl label node <NODE-NAME> nvidia.com/device-plugin.config-` 去除对应的 label。静静等待 gpu-operator 操作结束即可。如果还有问题，重启机器。确保 `nvidia.com/device-plugin.config` 不存在或者为 none，执行 `kubectl uncordon <NODE-NAME>`。
 
+
+## 2.2. [k8s DRA](https://github.com/NVIDIA/k8s-dra-driver-gpu) 实践 【TODO】
+
+> 参考阅读：
+> 1. https://kubernetes.io/docs/tutorials/cluster-management/install-use-dra/
+
+DRA: Dynamic Resource Allocation.
+
+使用 DRA driver 可以更动态地操作 GPU 的分配和共享（[source](https://www.youtube.com/watch?v=1QfShSQLsbs&t=1080s&ab_channel=CNCF%5BCloudNativeComputingFoundation%5D)）。
 
 # 参考
 
