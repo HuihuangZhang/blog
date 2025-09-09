@@ -175,6 +175,12 @@ gpu-operator 已经集成了 nvidia-dcgm-exporter，理论上每个 GPU 机器�
 
 在 prometheus targets 中没有找到 dcgm 相关的信息。执行 `kubectl get servicemonitors -A` 命令，没有看到 dcgm-exporter 的 ServiceMonitor。
 
+#### 修改 gpu-operator 配置添加 serviceMonitor
+
+执行 `kubectl edit clusterpolicy cluster-policy -n gpu-operator`，定位到 `dcgmExporter.serviceMonitor`，当前的 `enabled` 应该为 `false`。修改成 `true` 后保存退出，会自动检查差异，并创建 Service Monitor。然后执行 `kubectl get servicemonitor -n gpu-operator` 就可以看到相应的资源。
+
+#### 手动添加
+
 新建 `dcgm-exporter-servicemonitor.yaml` 配置文件：
 
 ```
