@@ -178,7 +178,7 @@ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op"
 > 另外，直观上感受，`single` 策略切分后的 GPU，名字不会有变化（还是 `nvidia.com/gpu`）；`mixed` 策略切分后的 GPU，名字会变成 `nvidia.com/mig-xg.xxgb` 的形式。
 
 
-新建配置， `mig-config-fine.yaml`:
+新建配置，按照官方文档 指导 `mig-config-fine.yaml`[^9]:
 
 ```yaml
 apiVersion: v1
@@ -189,8 +189,6 @@ metadata:
 data:
   config.yaml: |
     version: v1
-    flags:
-      migStrategy: mixed
     mig-configs:
       a100-80gb-4:
         - devices: [0]
@@ -232,6 +230,8 @@ data:
 
 #### 操作 MIG 时，GPU 被占用
 
+在执行 MIG 操作时，需要先执行 `kubectl cordon <NODE-NAME>` 和 `kubectl drain <NODE-NAME> --ignore-daemonsets` 清理掉 node 上的 pod。
+
 查看 `nvidia-mig-manager-xxx` 的日志，看到如下错误：
 
 ```
@@ -268,4 +268,5 @@ DRA: Dynamic Resource Allocation.
 [^6]: [Improving GPU Utilization in Kubernetes](https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes)
 [^7]: https://stackoverflow.com/a/78673375
 [^8]: https://docs.nvidia.com/datacenter/cloud-native/kubernetes/latest/index.html#testing-with-different-strategies
+[^9]: [GPU Operator with MIG](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html)
 
