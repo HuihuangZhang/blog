@@ -242,11 +242,24 @@ data:
 
 <img width="1246" height="788" alt="Image" src="https://github.com/user-attachments/assets/bcc38ae2-5872-4640-9845-26acbcc9ab6e" />
 
-通过命令 `systemctl stop sensecore-telemetry-ecs`  关闭对应的服务，执行 `kubectl delete -n gpu-operator pod nvidia-mig-manager-xxx` 重新触发 mig 操作，mig 结果正常。
+关闭对应的服务，通过 `sudo fuser -v /dev/nvidia* -k -9` 该命令可以强制杀死，但普遍上会被重新拉起，
+
+执行 `kubectl delete -n gpu-operator pod nvidia-mig-manager-xxx` 重新触发 mig 操作，mig 结果正常。
 
 ### 2.1.4. 撤销 gpu 共享操作
 
 执行 `kubectl cordon <NODE-NAME>` 将节点设置为不可调度，等确保所有节点被迁移出该节点后（确保 GPU 不会被其他程序占用，可能会出问题），执行 `kubectl label node <NODE-NAME> nvidia.com/device-plugin.config-` 去除对应的 label。静静等待 gpu-operator 操作结束即可。如果还有问题，重启机器。确保 `nvidia.com/device-plugin.config` 不存在或者为 none，执行 `kubectl uncordon <NODE-NAME>`。
+
+撤销 MIG：
+
+执行 `kubectl label node <NODE-NAME> nvidia.com/mig.config=all-disabled --overwrite` 命令，去掉 mig 配置，理论上 mig-manager 会做操作。
+
+如果要在机器上取消 MIG 模式，可以参考：
+
+1. 通过 `sudo nvidia-smi mig -lgi` 命令查看 MIG 实例情况；
+2. 运行 `sudo nvidia-smi mig -dci && sudo nvidia-smi mig -dgi` 杀死所有 GPU 卡上的所有实例；
+3. 通过 `sudo nvidia-smi` 命令看哪张卡上的 `MIG M.` 是 `Enabled`，通过 `sudo nvidia-smi -i 3,4,5,6 -mig 0` 命令来关闭 MIG Mode，其中命令中的 `3,4,5,6` 是 GPU 卡序号；
+4. 成功关闭后，在运行 `nvidia-smi mig -lgi` 查看一次；
 
 
 ## 2.2. [k8s DRA](https://github.com/NVIDIA/k8s-dra-driver-gpu) 实践 【TODO】
